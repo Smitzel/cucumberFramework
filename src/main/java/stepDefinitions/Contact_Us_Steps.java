@@ -9,8 +9,10 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
 
 public class Contact_Us_Steps {
     private WebDriver driver;
@@ -19,6 +21,7 @@ public class Contact_Us_Steps {
     public void setup() {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/src/main/java/drivers/chromedriver.exe");
         ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--remote-allow-origins=*", "ignore-certificate-errors");
         chromeOptions.setPageLoadStrategy(PageLoadStrategy.NORMAL);
         driver = new ChromeDriver(chromeOptions);
         driver.manage().window().maximize();
@@ -26,8 +29,6 @@ public class Contact_Us_Steps {
 
     @After
     public void tearDown() {
-        ChromeOptions chromeOptions = new ChromeOptions();
-        driver = new ChromeDriver(chromeOptions);
         driver.quit();
     }
 
@@ -44,17 +45,20 @@ public class Contact_Us_Steps {
         driver.findElement(By.cssSelector("[name=\"last_name\"]")).sendKeys("Blogs");
     }
     @And("I enter an email address")
-    public void i_enter_an_email_address() throws InterruptedException {
+    public void i_enter_an_email_address() {
         driver.findElement(By.name("email")).sendKeys("joe_blogs123@mail.com");
-        Thread.sleep(3000);
     }
     @And("I enter a comment")
     public void i_enter_a_comment() {
+        driver.findElement(By.name("message")).sendKeys("Hello how are you?");
     }
     @And("I click on the submit button")
     public void i_click_on_the_submit_button() {
+        driver.findElement(By.cssSelector("[value=\"SUBMIT\"]")).click();
     }
     @Then("I should be presented with a successful contact us submission message")
     public void i_should_be_presented_with_a_successful_contact_us_submission_message() {
+        WebElement contactUs_Submission_Message = driver.findElement(By.xpath("//div[@id='contact_reply']/h1"));
+        Assert.assertEquals(contactUs_Submission_Message.getText(), "Thank You for your Message!");
     }
 }
