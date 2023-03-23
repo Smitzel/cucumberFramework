@@ -48,5 +48,12 @@
       <artifactId>cucumber-testng</artifactId>
       <version>7.11.1</version>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.consol.citrus/citrus-cucumber -->
+    <dependency>
+      <groupId>com.consol.citrus</groupId>
+      <artifactId>citrus-cucumber</artifactId>
+      <version>3.2.0</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>
